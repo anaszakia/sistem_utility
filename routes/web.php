@@ -115,6 +115,25 @@ Route::middleware(['auth', 'log.sensitive'])->group(function () {
     Route::delete('/permissions/{permission}', [App\Http\Controllers\PermissionController::class, 'destroy'])
         ->middleware('permission:delete permissions')
         ->name('permissions.destroy');
+    
+    // Repair Request Management routes
+    Route::resource('repair-requests', App\Http\Controllers\RepairRequestController::class)
+        ->middleware('permission:view repair requests');
+    Route::post('/repair-requests/{repairRequest}/approve', [App\Http\Controllers\RepairRequestController::class, 'approve'])
+        ->middleware('permission:approve repair requests')
+        ->name('repair-requests.approve');
+    Route::post('/repair-requests/{repairRequest}/reject', [App\Http\Controllers\RepairRequestController::class, 'reject'])
+        ->middleware('permission:reject repair requests')
+        ->name('repair-requests.reject');
+    Route::post('/repair-requests/{repairRequest}/complete', [App\Http\Controllers\RepairRequestController::class, 'complete'])
+        ->middleware('permission:complete repair requests')
+        ->name('repair-requests.complete');
+    Route::post('/repair-requests/{repairRequest}/start-progress', [App\Http\Controllers\RepairRequestController::class, 'startProgress'])
+        ->middleware('permission:approve repair requests')
+        ->name('repair-requests.start-progress');
+    Route::get('/api/available-technicians', [App\Http\Controllers\RepairRequestController::class, 'getAvailableTechnicians'])
+        ->middleware('permission:assign technicians')
+        ->name('api.available-technicians');
 });
 
 Route::redirect('/', '/login');

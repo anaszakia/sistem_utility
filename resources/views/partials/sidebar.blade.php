@@ -14,7 +14,7 @@
             <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <i class="fas fa-layer-group text-white text-sm"></i>
             </div>
-            <span class="text-lg font-semibold text-gray-800 sidebar-text">Admin Panel</span>
+            <span class="text-lg font-semibold text-gray-800 sidebar-text">Utility</span>
         </div>
         <div class="flex items-center space-x-1">
             <!-- Desktop Toggle Button - Langsung klik tanpa hover -->
@@ -39,6 +39,28 @@
                     <span class="sidebar-text">Dashboard</span>
                 </a>
             </li>
+            
+            <!-- Repair Requests - For departments and utility admins -->
+            @can('view repair requests')
+                <li>
+                    <a href="{{ route('repair-requests.index') }}" 
+                       class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
+                        <i class="fas fa-tools w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
+                        <span class="sidebar-text">Laporan Perbaikan</span>
+                    </a>
+                </li>
+            @endcan
+
+            <!-- My Assignments - For technicians -->
+            @can('view my assignments')
+                <li>
+                    <a href="{{ route('repair-requests.index') }}" 
+                       class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
+                        <i class="fas fa-clipboard-list w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
+                        <span class="sidebar-text">Tugas Saya</span>
+                    </a>
+                </li>
+            @endcan
             
             <!-- Management Section - Only show if user has any management permissions -->
             @if(auth()->user()->can('view users') || auth()->user()->can('view audit logs') || auth()->user()->can('view roles') || auth()->user()->can('view permissions'))
@@ -83,44 +105,6 @@
                     </div>
                 </li>
             @endif
-            
-            <!-- Reports - Only for super admin or users with specific permissions -->
-            @hasrole('super_admin')
-                <li>
-                    <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
-                        <i class="fas fa-chart-line w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
-                        <span class="sidebar-text">Reports</span>
-                    </a>
-                </li>
-            @endhasrole
-            
-            <!-- Profile - Available to all users with edit profile permission -->
-            @can('edit profile')
-                <li>
-                    <a href="{{ route('profile.edit') }}" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
-                        <i class="fas fa-user-edit w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
-                        <span class="sidebar-text">My Profile</span>
-                    </a>
-                </li>
-            @endcan
-            
-            <!-- Settings - Super Admin only -->
-            @hasrole('super_admin')
-                <li>
-                    <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
-                        <i class="fas fa-cog w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
-                        <span class="sidebar-text">Settings</span>
-                    </a>
-                </li>
-            @endhasrole
-            
-            <!-- Help - Available to all users -->
-            <li>
-                <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
-                    <i class="fas fa-question-circle w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
-                    <span class="sidebar-text">Help</span>
-                </a>
-            </li>
         </ul>
     </nav>
     
